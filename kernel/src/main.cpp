@@ -94,16 +94,30 @@ extern "C" void kmain() {
     }
 
     // Fetch the first framebuffer.
-    limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
+    // limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
 
-    // Print a nice pattern to screen as an example.
-    // Note: we assume the framebuffer model is RGB with 32-bit pixels.
-    volatile std::uint32_t *fb_ptr = static_cast<volatile std::uint32_t *>(framebuffer->address);
+    struct RGB
+    {
+        std::uint8_t blue;
+        std::uint8_t green;
+        std::uint8_t red;
+        std::uint8_t alpha;
+    };
+
+    RGB* fb_ptr = static_cast<RGB*>(framebuffer->address);
+
     for (std::size_t y = 0; y < framebuffer->height; y++) {
         for (std::size_t x = 0; x < framebuffer->width; x++) {
             std::uint32_t nX = x * 255 / framebuffer->width;
             std::uint32_t nY = y * 255 / framebuffer->height;
-            fb_ptr[y * (framebuffer->pitch / 4) + x] = (nY << 8) | nX;
+            // fb_ptr[y * (framebuffer->pitch / 4) + x] = (nY << 8) | nX;
+
+            // mmm punane
+            fb_ptr[y * (framebuffer->pitch / 4) + x].red = nY;
+            fb_ptr[y * (framebuffer->pitch / 4) + x].alpha = nX;
+
+            // nt punane ekraan nii
+            // fb_ptr[y * (framebuffer->pitch / 4) + x].red = 255;
         }
     }
 
