@@ -18,6 +18,7 @@
           pkgs.clang
           pkgs.cmake
           pkgs.qemu
+          pkgs.libisoburn
         ];
       };
     };
