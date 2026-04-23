@@ -94,7 +94,7 @@ extern "C" void kmain() {
     }
 
     // Fetch the first framebuffer.
-    // limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
+    limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
 
     struct RGB
     {
