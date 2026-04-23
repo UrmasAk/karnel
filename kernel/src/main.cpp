@@ -2,6 +2,9 @@
 #include <cstddef>
 #include <limine.h>
 
+#include "../inc/gdt.hpp"
+#include "../inc/idt.hpp"
+
 // Set the base revision to 6, this is recommended as this is the latest
 // base revision described by the Limine boot protocol specification.
 // See specification for further info.
@@ -120,6 +123,9 @@ extern "C" void kmain() {
             // fb_ptr[y * (framebuffer->pitch / 4) + x].red = 255;
         }
     }
+
+    setup_gdt();
+    setup_idt();
 
     // We're done, just hang...
     hcf();
