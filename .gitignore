@@ -3,3 +3,4 @@
 /edk2-ovmf
 *.iso
 *.hdd
+.direnv
