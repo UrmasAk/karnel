@@ -2,6 +2,7 @@
 
 GDT::Entry gdt[7];
 GDT::Register gdtr;
+GDT::TSS my_tss;
 
 void gdt_fill_entry(int num, std::uint8_t access, std::uint8_t granularity, std::uint32_t base, std::uint32_t limit) {
     gdt[num].limit_low = limit & 0xFFFF;
@@ -16,6 +17,8 @@ void setup_gdt() {
     gdt_fill_entry(0, 0, 0, 0, 0);
     gdt_fill_entry(1, 0x9A, 0x20, 0, 0);
     gdt_fill_entry(2, 0x92, 0x00, 0, 0);
+
+    gdt_install_tss(3, (uint64_t)&my_tss);
 
     gdtr.limit = sizeof(gdt) - 1;
     gdtr.base = reinterpret_cast<std::uint64_t>(&gdt);
@@ -36,6 +39,20 @@ void setup_gdt() {
         : : : "rax"
     );
 
-    // ei toota sest pole TSS indeksil 3
-    // asm volatile ("ltr %%ax" ::"a"(0x18));
+    asm volatile ("ltr %%ax" ::"a"(0x18));
+}
+
+void gdt_install_tss(int num, uint64_t base) {
+    uint32_t limit = sizeof(GDT::TSS) - 1;
+
+    GDT::TSSDescriptor* desc = (GDT::TSSDescriptor*)&gdt[num];
+
+    desc->limit_low = limit & 0xFFFF;
+    desc->base_low = base & 0xFFFF;
+    desc->base_mid = (base >> 16) & 0xFF;
+    desc->access = 0x89; // Present, Executable, Accessed (TSS type)
+    desc->granularity = ((limit >> 16) & 0x0F);
+    desc->base_high = (base >> 24) & 0xFF;
+    desc->base_upper32 = (base >> 32) & 0xFFFFFFFF;
+    desc->reserved = 0;
 }

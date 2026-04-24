@@ -28,18 +28,18 @@ namespace IDT {
 }
 
 
+extern "C" {
 
 extern IDT::Entry idt[256];
 extern IDT::Register idtr;
 
 void set_idt_entry(int index, int ist, int attr, void (*handler)());
 
+extern volatile int pitInterruptsTriggered;
 
-extern "C" {
-    extern volatile int pitInterruptsTriggered;
-
-    [[gnu::interrupt]]
-    void pit_isr([[maybe_unused]] void* frame);
-}
+[[gnu::interrupt]]
+void pit_isr([[maybe_unused]] void* frame);
 
 void setup_idt();
+
+}

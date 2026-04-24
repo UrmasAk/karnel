@@ -1,5 +1,7 @@
 #pragma once
 
+extern "C" {
+
 inline void outb(unsigned short port, unsigned char val) {
     __asm__ volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
 }
@@ -11,4 +13,6 @@ inline unsigned char inb(unsigned short port) {
     : "=a"(ret)
     : "Nd"(port) );
     return ret;
+}
+
 }

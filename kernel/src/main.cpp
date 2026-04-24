@@ -4,6 +4,8 @@
 
 #include "../inc/gdt.hpp"
 #include "../inc/idt.hpp"
+#include "../inc/pic.hpp"
+#include "../inc/pit.hpp"
 
 // Set the base revision to 6, this is recommended as this is the latest
 // base revision described by the Limine boot protocol specification.
@@ -107,6 +109,11 @@ extern "C" void kmain() {
         std::uint8_t alpha;
     };
 
+    setup_gdt();
+    setup_idt();
+    setup_pic(0x20, 0x28);
+    setup_pit(1000);
+
     RGB* fb_ptr = static_cast<RGB*>(framebuffer->address);
 
     for (std::size_t y = 0; y < framebuffer->height; y++) {
@@ -116,16 +123,25 @@ extern "C" void kmain() {
             // fb_ptr[y * (framebuffer->pitch / 4) + x] = (nY << 8) | nX;
 
             // mmm punane
-            fb_ptr[y * (framebuffer->pitch / 4) + x].red = nY;
-            fb_ptr[y * (framebuffer->pitch / 4) + x].alpha = nX;
+            // fb_ptr[y * (framebuffer->pitch / 4) + x].red = nY;
+            // fb_ptr[y * (framebuffer->pitch / 4) + x].alpha = nX;
 
             // nt punane ekraan nii
-            // fb_ptr[y * (framebuffer->pitch / 4) + x].red = 255;
+            fb_ptr[y * (framebuffer->pitch / 4) + x].red = 255;
         }
     }
 
-    setup_gdt();
-    setup_idt();
+    pit_sleep_ms(100);
+
+
+    for (std::size_t y = 0; y < framebuffer->height; y++) {
+        for (std::size_t x = 0; x < framebuffer->width; x++) {
+            fb_ptr[y * (framebuffer->pitch / 4) + x].blue = 255;
+        }
+    }
+
+
+
 
     // We're done, just hang...
     hcf();
