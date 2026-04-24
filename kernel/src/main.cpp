@@ -109,10 +109,10 @@ extern "C" void kmain() {
         std::uint8_t alpha;
     };
 
-    setup_gdt();
-    setup_idt();
-    setup_pic(0x20, 0x28);
-    setup_pit(1000);
+    // setup_gdt();
+    // setup_idt();
+    // setup_pic(0x20, 0x28);
+    // setup_pit(1000);
 
     RGB* fb_ptr = static_cast<RGB*>(framebuffer->address);
 
@@ -131,7 +131,7 @@ extern "C" void kmain() {
         }
     }
 
-    pit_sleep_ms(100);
+    // pit_sleep_ms(100);
 
 
     for (std::size_t y = 0; y < framebuffer->height; y++) {
