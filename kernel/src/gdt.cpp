@@ -1,8 +1,10 @@
 #include "../inc/gdt.hpp"
 
-GDT::Entry gdt[7];
-GDT::Register gdtr;
-GDT::TSS my_tss;
+extern "C" {
+
+static GDT::Entry gdt[7];
+static GDT::Register gdtr;
+static GDT::TSS my_tss;
 
 void gdt_fill_entry(int num, std::uint8_t access, std::uint8_t granularity, std::uint32_t base, std::uint32_t limit) {
     gdt[num].limit_low = limit & 0xFFFF;
@@ -55,4 +57,6 @@ void gdt_install_tss(int num, uint64_t base) {
     desc->base_high = (base >> 24) & 0xFF;
     desc->base_upper32 = (base >> 32) & 0xFFFFFFFF;
     desc->reserved = 0;
+}
+
 }

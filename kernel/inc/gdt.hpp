@@ -48,10 +48,6 @@ namespace GDT {
 
 extern "C" {
 
-extern GDT::Entry gdt[7];
-extern GDT::Register gdtr;
-extern GDT::TSS my_tss;
-
 void gdt_install_tss(int num, uint64_t base);
 
 void gdt_fill_entry (int num, std::uint8_t access, std::uint8_t granularity, std::uint32_t base, std::uint32_t limit);

@@ -2,8 +2,9 @@
 #include "../inc/io.hpp"
 
 extern "C" {
-IDT::Entry idt[256];
-IDT::Register idtr;
+
+static IDT::Entry idt[256];
+static IDT::Register idtr;
 
 void set_idt_entry(int index, int ist, int attr, void(* handler)()) {
     uintptr_t addr = reinterpret_cast<uintptr_t>(handler);
@@ -39,6 +40,7 @@ void setup_idt() {
     */
     set_idt_entry(0x20, 0, 0x8E, reinterpret_cast<void (*)()>(pit_isr));
 
+    outb(0x3F8, '?'); // Debug: Send '!' to serial on every tick
     idtr.limit = sizeof(idt) - 1;
     idtr.base = reinterpret_cast<uint64_t>(&idt);
 

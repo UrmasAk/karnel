@@ -30,9 +30,6 @@ namespace IDT {
 
 extern "C" {
 
-extern IDT::Entry idt[256];
-extern IDT::Register idtr;
-
 void set_idt_entry(int index, int ist, int attr, void (*handler)());
 
 extern volatile int pitInterruptsTriggered;

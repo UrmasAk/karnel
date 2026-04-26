@@ -1,3 +1,4 @@
+#include <cstdint>
 #include "../inc/pic.hpp"
 #include "../inc/pit.hpp"
 
@@ -43,3 +44,14 @@ void unmask_irq(unsigned char irq) {
     outb(port, value);
     io_wait();
 }
+
+void disable_apic() {
+    uint32_t low = 0;
+    uint32_t high = 0;
+    // IA32_APIC_BASE MSR
+    __asm__ volatile("rdmsr" : "=a"(low), "=d"(high) : "c"(0x1B));
+    low &= ~(1 << 11); // Bit 11 is the 'Global Enable' bit
+    __asm__ volatile("wrmsr" : : "a"(low), "d"(high), "c"(0x1B));
+}
+
+

@@ -92,6 +92,18 @@ extern "C" void kmain() {
         __init_array[i]();
     }
 
+    // Interruptide jaoks
+    setup_gdt();
+    setup_idt();
+    // APIC on eelistatud 64bit systeemides, seega peame seda valja lylitama, muidu PIC ei tegele katkestustega tegelt
+    // voib ka nii teha, et ta delegeeriks meie PIC-ile moned katkestused, aga noh hetkel lihtsam seda lihtsalt valja
+    // lylitada, kuigi spurious interrupts on probleemiks sel juhul
+    disable_apic();
+    setup_pic(0x20, 0x28);
+    setup_pit(1000);
+
+
+
     // Ensure we got a framebuffer.
     if (framebuffer_request.response == nullptr
      || framebuffer_request.response->framebuffer_count < 1) {
@@ -109,39 +121,31 @@ extern "C" void kmain() {
         std::uint8_t alpha;
     };
 
-    // setup_gdt();
-    // setup_idt();
-    // setup_pic(0x20, 0x28);
-    // setup_pit(1000);
-
     RGB* fb_ptr = static_cast<RGB*>(framebuffer->address);
 
     for (std::size_t y = 0; y < framebuffer->height; y++) {
         for (std::size_t x = 0; x < framebuffer->width; x++) {
-            std::uint32_t nX = x * 255 / framebuffer->width;
+            // std::uint32_t nX = x * 255 / framebuffer->width;
             std::uint32_t nY = y * 255 / framebuffer->height;
             // fb_ptr[y * (framebuffer->pitch / 4) + x] = (nY << 8) | nX;
 
             // mmm punane
-            // fb_ptr[y * (framebuffer->pitch / 4) + x].red = nY;
-            // fb_ptr[y * (framebuffer->pitch / 4) + x].alpha = nX;
+            fb_ptr[y * (framebuffer->pitch / 4) + x].red = nY;
 
             // nt punane ekraan nii
-            fb_ptr[y * (framebuffer->pitch / 4) + x].red = 255;
+            // fb_ptr[y * (framebuffer->pitch / 4) + x].red = 255;
         }
+        pit_sleep_ms(1);
     }
 
-    // pit_sleep_ms(100);
-
+    pit_sleep_ms(1000);
 
     for (std::size_t y = 0; y < framebuffer->height; y++) {
         for (std::size_t x = 0; x < framebuffer->width; x++) {
-            fb_ptr[y * (framebuffer->pitch / 4) + x].blue = 255;
+            fb_ptr[y * (framebuffer->pitch / 4) + x].blue = 100;
         }
+        pit_sleep_ms(1);
     }
-
-
-
 
     // We're done, just hang...
     hcf();

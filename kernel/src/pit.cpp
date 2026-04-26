@@ -10,7 +10,6 @@ void pit_sleep_ms(unsigned int ms) {
     int targetTicks = startTicks + (ms * pitFrequency) / 1000;
 
     while (pitInterruptsTriggered < targetTicks) {
-        outb(0x3F8, inb(0x21) + '0'); // Print the PIC mask to serial
         int currentTicks = pitInterruptsTriggered;
 
         if (currentTicks < startTicks) {
@@ -21,6 +20,7 @@ void pit_sleep_ms(unsigned int ms) {
         asm volatile("hlt");
     }
 }
+
 
 void setup_pit(unsigned int frequency) {
     __asm__ __volatile__("cli");

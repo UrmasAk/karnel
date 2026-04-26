@@ -15,12 +15,10 @@
 
 extern "C" {
 
-// static inline void io_wait() {
-//     outb(0x80, 0);
-// }
-
 void unmask_irq(unsigned char irq);
 
 void setup_pic(int offset1, int offset2);
+
+void disable_apic();
 
 }
