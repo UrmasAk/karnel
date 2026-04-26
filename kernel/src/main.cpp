@@ -123,28 +123,46 @@ extern "C" void kmain() {
 
     RGB* fb_ptr = static_cast<RGB*>(framebuffer->address);
 
-    for (std::size_t y = 0; y < framebuffer->height; y++) {
-        for (std::size_t x = 0; x < framebuffer->width; x++) {
-            // std::uint32_t nX = x * 255 / framebuffer->width;
-            std::uint32_t nY = y * 255 / framebuffer->height;
-            // fb_ptr[y * (framebuffer->pitch / 4) + x] = (nY << 8) | nX;
+    while (true) {
 
-            // mmm punane
-            fb_ptr[y * (framebuffer->pitch / 4) + x].red = nY;
-
-            // nt punane ekraan nii
-            // fb_ptr[y * (framebuffer->pitch / 4) + x].red = 255;
+        for (std::size_t y = 0; y < framebuffer->height; y++) {
+            for (std::size_t x = 0; x < framebuffer->width; x++) {
+                // std::uint32_t nX = x * 255 / framebuffer->width;
+                std::uint32_t nY = y * 255 / framebuffer->height;
+                fb_ptr[y * (framebuffer->pitch / 4) + x].red = nY;
+            }
+            pit_sleep_ms(1);
         }
-        pit_sleep_ms(1);
-    }
 
-    pit_sleep_ms(1000);
+        // int lock_in_time_sec = 20 * 60;
+        int lock_in_time_sec = 10;
 
-    for (std::size_t y = 0; y < framebuffer->height; y++) {
-        for (std::size_t x = 0; x < framebuffer->width; x++) {
-            fb_ptr[y * (framebuffer->pitch / 4) + x].blue = 100;
+        for (int i = 0; i < lock_in_time_sec; ++i) {
+            pit_sleep_ms(1000);
         }
-        pit_sleep_ms(1);
+
+        for (std::size_t y = 0; y < framebuffer->height; y++) {
+            for (std::size_t x = 0; x < framebuffer->width; x++) {
+                fb_ptr[y * (framebuffer->pitch / 4) + x].blue = 100;
+            }
+            pit_sleep_ms(1);
+        }
+
+        // int lock_out_time_sec = 5 * 60;
+        int lock_out_time_sec = 2;
+        for (int i = 0; i < lock_out_time_sec; ++i) {
+            pit_sleep_ms(1000);
+        }
+
+        for (std::size_t y = 0; y < framebuffer->height; y++) {
+            for (std::size_t x = 0; x < framebuffer->width; x++) {
+                fb_ptr[y * (framebuffer->pitch / 4) + x].blue = 0;
+                fb_ptr[y * (framebuffer->pitch / 4) + x].green = 0;
+                fb_ptr[y * (framebuffer->pitch / 4) + x].red = 0;
+                fb_ptr[y * (framebuffer->pitch / 4) + x].alpha = 0;
+            }
+            pit_sleep_ms(1);
+        }
     }
 
     // We're done, just hang...
