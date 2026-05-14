@@ -1,3 +1,6 @@
+#define SSFN_CONSOLEBITMAP_TRUECOLOR    /* use the special renderer for 32 bit truecolor packed pixels */
+#define SSFN_NO_CPP_STD_STRING
+
 #include <cstdint>
 #include <cstddef>
 #include <limine.h>
@@ -6,6 +9,7 @@
 #include "../inc/idt.hpp"
 #include "../inc/pic.hpp"
 #include "../inc/pit.hpp"
+#include "../inc/ssfn.hpp"
 
 // Set the base revision to 6, this is recommended as this is the latest
 // base revision described by the Limine boot protocol specification.
@@ -74,6 +78,11 @@ extern "C" {
     void *__dso_handle;
 }
 
+extern "C" {
+    extern const std::uint8_t font_u_vga16_start[];
+    extern const std::uint8_t font_u_vga16_end[];
+}
+
 // Extern declarations for global constructors array.
 extern void (*__init_array[])();
 extern void (*__init_array_end[])();
@@ -123,6 +132,21 @@ extern "C" void kmain() {
 
     RGB* fb_ptr = static_cast<RGB*>(framebuffer->address);
 
+    // Text setup
+
+    /* set up context by global variables */
+    ssfn_src = reinterpret_cast<ssfn_font_t*>(const_cast<std::uint8_t*>(font_u_vga16_start));      /* the bitmap font to use */
+
+    ssfn_dst.ptr = static_cast<std::uint8_t*>(framebuffer->address);                  /* address of the linear frame buffer */
+    ssfn_dst.w = framebuffer->width;                          /* width */
+    ssfn_dst.h = framebuffer->height;                           /* height */
+    ssfn_dst.p = framebuffer->pitch;                          /* bytes per line */
+    ssfn_dst.x = ssfn_dst.y = 0;                /* pen position */
+    ssfn_dst.fg = 0xFFFFFF;                     /* foreground color */
+
+
+
+
     while (true) {
 
         for (std::size_t y = 0; y < framebuffer->height; y++) {
@@ -133,6 +157,14 @@ extern "C" void kmain() {
             }
             pit_sleep_ms(1);
         }
+
+        /* render UNICODE codepoints directly to the screen and then adjust pen position */
+        ssfn_putc('H');
+        ssfn_putc('e');
+        ssfn_putc('l');
+        ssfn_putc('l');
+        ssfn_putc('o');
+
 
         // int lock_in_time_sec = 20 * 60;
         int lock_in_time_sec = 10;
