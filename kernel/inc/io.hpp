@@ -6,6 +6,9 @@ inline void outb(unsigned short port, unsigned char val) {
     __asm__ volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
 }
 
+static inline void io_wait() {
+    outb(0x80, 0);
+}
 
 inline unsigned char inb(unsigned short port) {
     unsigned char ret;

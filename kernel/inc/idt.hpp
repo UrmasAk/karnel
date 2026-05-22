@@ -3,7 +3,7 @@
 
 namespace IDT {
     struct [[gnu::packed]] Entry {
-        uint16_t offset_low;
+        std::uint16_t offset_low;
         uint16_t selector;
         uint8_t  ist;
         uint8_t  type_attr;
@@ -35,7 +35,10 @@ void set_idt_entry(int index, int ist, int attr, void (*handler)());
 extern volatile int pitInterruptsTriggered;
 
 [[gnu::interrupt]]
-void pit_isr([[maybe_unused]] void* frame);
+void pit_isr(void*);
+
+[[gnu::interrupt]]
+void ps2_isr(void*);
 
 void setup_idt();
 

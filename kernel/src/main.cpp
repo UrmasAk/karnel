@@ -10,6 +10,7 @@
 #include "../inc/pic.hpp"
 #include "../inc/pit.hpp"
 #include "../inc/ssfn.hpp"
+#include "../inc/ps2.hpp"
 
 // Set the base revision to 6, this is recommended as this is the latest
 // base revision described by the Limine boot protocol specification.
@@ -109,6 +110,7 @@ extern "C" void kmain() {
     // lylitada, kuigi spurious interrupts on probleemiks sel juhul
     disable_apic();
     setup_pic(0x20, 0x28);
+    setup_ps2();
     setup_pit(1000);
 
 

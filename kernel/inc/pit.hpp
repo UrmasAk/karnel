@@ -9,10 +9,6 @@
 
 extern "C" {
 
-static inline void io_wait() {
-    outb(0x80, 0);
-}
-
 void pit_sleep_ms(unsigned int ms);
 
 void setup_pit(unsigned int frequency);
