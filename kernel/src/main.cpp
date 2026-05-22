@@ -78,6 +78,7 @@ extern "C" {
     void *__dso_handle;
 }
 
+// Fondi kättesaamiseks mälust
 extern "C" {
     extern const std::uint8_t font_u_vga16_start[];
     extern const std::uint8_t font_u_vga16_end[];
