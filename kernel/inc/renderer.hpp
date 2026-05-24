@@ -6,13 +6,14 @@
 #define KARNEL_RENDER_H
 
 #include "limine.h"
+#include "pomodoro.hpp"
 
 
 class Renderer {
 public:
     Renderer(limine_framebuffer *framebuffer_ptr, const uint8_t* font_ptr);
     void setString(char *string);
-    void render();
+    void render(Pomodoro::State state, int remaining_time_sec);
 
 
 

@@ -7,6 +7,7 @@
 #include "../inc/idt.hpp"
 #include "../inc/pic.hpp"
 #include "../inc/pit.hpp"
+#include "../inc/pomodoro.hpp"
 #include "../inc/renderer.hpp"
 #include "../inc/ps2.hpp"
 
@@ -135,48 +136,9 @@ extern "C" void kmain() {
 
     // Text setup
 
+    Pomodoro pomodoro{};
+
     Renderer render{framebuffer,font_u_vga16_start};
-
-
-
-
-    for (std::size_t y = 0; y < framebuffer->height; y++) {
-        for (std::size_t x = 0; x < framebuffer->width; x++) {
-            // std::uint32_t nX = x * 255 / framebuffer->width;
-            std::uint32_t nY = y * 255 / framebuffer->height;
-            fb_ptr[y * (framebuffer->pitch / 4) + x].red = nY;
-        }
-        pit_sleep_ms(1);
-    }
-
-    // /* render UNICODE codepoints directly to the screen and then adjust pen position */
-    // ssfn_putc('H');
-    // ssfn_putc('e');
-    // ssfn_putc('l');
-    // ssfn_putc('l');
-    // ssfn_putc('o');
-
-
-    // // int lock_in_time_sec = 20 * 60;
-    // int lock_in_time_sec = 10;
-    //
-    // for (int i = 0; i < lock_in_time_sec; ++i) {
-    //     pit_sleep_ms(1000);
-    // }
-    //
-    // for (std::size_t y = 0; y < framebuffer->height; y++) {
-    //     for (std::size_t x = 0; x < framebuffer->width; x++) {
-    //         fb_ptr[y * (framebuffer->pitch / 4) + x].blue = 100;
-    //     }
-    //     pit_sleep_ms(1);
-    // }
-    //
-    // // int lock_out_time_sec = 5 * 60;
-    // int lock_out_time_sec = 2;
-    // for (int i = 0; i < lock_out_time_sec; ++i) {
-    //     pit_sleep_ms(1000);
-    // }
-    // char string[]{"tere!"};
     char string[]{"Ahoi!\0"};
     render.setString(string);
 

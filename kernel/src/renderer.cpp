@@ -33,6 +33,9 @@ void Renderer::render() {
     putText_();
 }
 
+void Renderer::render(Pomodoro::State state, int remaining_time_sec) {
+}
+
 void Renderer::clearScreen_() {
     volatile auto *fb_ptr = static_cast<volatile uint32_t *>(ptr_->address);
     for (uint64_t y = 0; y < ptr_->height; y++) {
