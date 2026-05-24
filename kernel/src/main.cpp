@@ -124,25 +124,18 @@ extern "C" void kmain() {
     // Fetch the first framebuffer.
     limine_framebuffer *framebuffer = framebuffer_request.response->framebuffers[0];
 
-    struct RGB
-    {
-        std::uint8_t blue;
-        std::uint8_t green;
-        std::uint8_t red;
-        std::uint8_t alpha;
-    };
-
-    RGB* fb_ptr = static_cast<RGB*>(framebuffer->address);
 
     // Text setup
 
-    Pomodoro pomodoro{};
-
     Renderer render{framebuffer,font_u_vga16_start};
+    Pomodoro pomodoro{render};
+    pomodoro.run();
+
+#ifdef MAIN_TEST_RENDER
     char string[]{"Ahoi!\0"};
-    render.setString(string);
 
     render.render();
+#endif
 
     // We're done, just hang...
     hcf();

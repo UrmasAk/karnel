@@ -5,6 +5,7 @@
 #define SSFN_NO_CPP_STD_STRING
 #include "../inc/ssfn.hpp"
 #include "../inc/renderer.hpp"
+#include "../inc/string.hpp"
 
 
 
@@ -21,34 +22,76 @@ Renderer::Renderer(limine_framebuffer *framebuffer_ptr, const uint8_t *font_ptr)
     ssfn_dst.fg = 0xFFFFFF;                     /* foreground color */
 }
 
-void Renderer::setString(char *string) {
-    string_ = string;
-
-}
-
+#ifdef RENDER_NO_VARIABLE
 void Renderer::render() {
     clearScreen_();
     ssfn_dst.x = ssfn_dst.w/2;
     ssfn_dst.y = ssfn_dst.h/2;
-    putText_();
+    putText_("tere");
 }
+#endif
 
 void Renderer::render(Pomodoro::State state, int remaining_time_sec) {
+    String time = calculate_remaining_time_(remaining_time_sec);
+    RGB pixel = [state]() -> RGB {
+        switch (state) {
+            case Pomodoro::State::W_RUN: return RGB{0, 0, 255, 255};
+            case Pomodoro::State::W_END: return RGB{0, 156, 255, 255};
+            case Pomodoro::State::W_PAUSE: return RGB{0, 0, 255, 128};
+            case Pomodoro::State::B_RUN: return RGB{0, 255, 0, 255};
+            case Pomodoro::State::B_END: return RGB{0, 255, 156, 255};
+            case Pomodoro::State::B_PAUSE: return RGB{0, 255, 0, 128};
+        }
+    }();
+
+    uint32_t pixel_value =
+        (static_cast<uint32_t>(pixel.alpha) << 24) |
+        (static_cast<uint32_t>(pixel.red) << 16) |
+        (static_cast<uint32_t>(pixel.green) << 8) |
+        (static_cast<uint32_t>(pixel.blue));
+
+    fill_screen(pixel_value);
+
+    ssfn_dst.x = ssfn_dst.w/2;
+    ssfn_dst.y = ssfn_dst.h/2;
+    putText_(time);
 }
 
-void Renderer::clearScreen_() {
+String Renderer::calculate_remaining_time_(int remaining_time_sec) {
+    int remaining_minutes = static_cast<int>(remaining_time_sec / 60);
+    int volatile remaining_seconds = remaining_time_sec - (remaining_minutes * 60);
+
+    String str;
+    if (remaining_seconds < 10) {
+        str = String::toString(remaining_minutes) + String(":0") + String::toString(remaining_seconds);
+    } else {
+        str = String::toString(remaining_minutes) + String(":") + String::toString(remaining_seconds);
+    }
+
+    return str;
+}
+
+void Renderer::fill_screen(uint32_t pixel_value) {
     volatile auto *fb_ptr = static_cast<volatile uint32_t *>(ptr_->address);
     for (uint64_t y = 0; y < ptr_->height; y++) {
         for (uint64_t x = 0; x < ptr_->width; x++) {
-            fb_ptr[y * (ptr_->pitch / 4) + x] = 23556;
+            fb_ptr[y * (ptr_->pitch / 4) + x] = pixel_value;
         }
     }
 }
 
-void Renderer::putText_() {
+void Renderer::putText_(char *string) {
     for (int i = 0; i < 16; i++) {
         // ssfn_putc(static_cast<uint32_t>(character));
         // uint32_t test = static_cast<uint32_t>(character) & 0x000000FF ;
-        ssfn_putc(string_[i]);
+        ssfn_putc(string[i]);
     }
 }
+
+void Renderer::putText_(String &str) {
+    for (int i = 0; i < str.length; ++i) {
+        ssfn_putc(str[i]);
+    }
+}
+
+
