@@ -11,7 +11,7 @@ public:
     String();
     String(const char *string);
     String(char string);
-    static String toString(int value);
+    static String to_string(int value);
 
     String operator+(const String &string);
 

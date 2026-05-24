@@ -23,7 +23,7 @@ String::String(char string) {
     length = 1;
 }
 
-String String::toString(int value) {
+String String::to_string(int value) {
     String valjund;
     for (int i = 16; i != 0 && value != 0; i--) {
         valjund = static_cast<String>("0123456789"[value % 10]) + valjund;

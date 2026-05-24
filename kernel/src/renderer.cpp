@@ -17,7 +17,7 @@ Renderer::Renderer(limine_framebuffer *framebuffer_ptr, const uint8_t *font_ptr)
 }
 
 void Renderer::render(Pomodoro::State state, int remaining_time_sec) {
-    String time = calculate_remaining_time_(remaining_time_sec);
+    String time = calculate_remaining_time(remaining_time_sec);
     RGB pixel = [state]() -> RGB {
         switch (state) {
             case Pomodoro::State::W_RUN: return RGB{0, 0, 128, 255};
@@ -40,10 +40,10 @@ void Renderer::render(Pomodoro::State state, int remaining_time_sec) {
 
     ssfn_dst.x = ssfn_dst.w/2 - 20;
     ssfn_dst.y = ssfn_dst.h/2;
-    putText_(time);
+    put_text(time);
 }
 
-String Renderer::calculate_remaining_time_(int remaining_time_sec) {
+String Renderer::calculate_remaining_time(int remaining_time_sec) {
     int remaining_minutes = remaining_time_sec / 60;
     int volatile remaining_seconds = remaining_time_sec - (remaining_minutes * 60);
     String minutes_padding{};
@@ -65,7 +65,7 @@ String Renderer::calculate_remaining_time_(int remaining_time_sec) {
         }
     }
 
-    String str = minutes_padding + String::toString(remaining_minutes) + String(":") + seconds_padding + String::toString(remaining_seconds);
+    String str = minutes_padding + String::to_string(remaining_minutes) + String(":") + seconds_padding + String::to_string(remaining_seconds);
 
     return str;
 }
@@ -79,7 +79,7 @@ void Renderer::fill_screen(uint32_t pixel_value) {
     }
 }
 
-void Renderer::putText_(String &str) {
+void Renderer::put_text(String &str) {
     for (int i = 0; i < str.length; ++i) {
         ssfn_putc(str[i]);
     }

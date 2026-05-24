@@ -19,7 +19,7 @@ private:
     };
     limine_framebuffer *ptr_;
 
-    String calculate_remaining_time_(int remaining_time_sec);
+    String calculate_remaining_time(int remaining_time_sec);
     void fill_screen(uint32_t);
-    void putText_(String &str);
+    void put_text(String &str);
 };
