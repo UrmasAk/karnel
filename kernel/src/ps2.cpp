@@ -61,12 +61,16 @@ extern Pomodoro pomodoro;
 extern volatile char kbd_buffer[];
 static int current_index = 0;
 
-char print_to_serial() {
+char read_input() {
     char c = kbd_buffer[current_index];
     kbd_buffer[current_index] = '\0';
-    current_index++;
+    if (current_index >= 255) {
+        current_index = 0;
+    } else {
+        current_index++;
+    }
     pomodoro.handle_kbd(c);
-    outb(0x3F8, c); // Debug: Send '!' to serial on every tick
+    outb(0x3F8, c); // Debug: Send to serial
     return c;
 }
 

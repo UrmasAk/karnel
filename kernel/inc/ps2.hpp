@@ -56,4 +56,4 @@ static constexpr Table build_lookup_table(const KeyMapping (&mappings)[N]) {
 inline constexpr auto asciiNoShift = build_lookup_table(noShiftMap);
 inline constexpr auto asciiShift   = build_lookup_table(shiftMap);
 
-char print_to_serial();
+char read_input();

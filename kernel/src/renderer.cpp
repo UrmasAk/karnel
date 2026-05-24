@@ -52,7 +52,7 @@ void Renderer::render(Pomodoro::State state, int remaining_time_sec) {
 
     fill_screen(pixel_value);
 
-    ssfn_dst.x = ssfn_dst.w/2;
+    ssfn_dst.x = ssfn_dst.w/2 - 20;
     ssfn_dst.y = ssfn_dst.h/2;
     putText_(time);
 }
@@ -60,13 +60,26 @@ void Renderer::render(Pomodoro::State state, int remaining_time_sec) {
 String Renderer::calculate_remaining_time_(int remaining_time_sec) {
     int remaining_minutes = remaining_time_sec / 60;
     int volatile remaining_seconds = remaining_time_sec - (remaining_minutes * 60);
+    String minutes_padding{};
+    String seconds_padding{};
 
-    String str;
     if (remaining_seconds < 10) {
-        str = String::toString(remaining_minutes) + String(":0") + String::toString(remaining_seconds);
-    } else {
-        str = String::toString(remaining_minutes) + String(":") + String::toString(remaining_seconds);
+        if (remaining_seconds == 0) {
+            seconds_padding = String{"00"};
+        } else {
+            seconds_padding = String{"0"};
+        }
     }
+
+    if (remaining_minutes < 10) {
+        if (remaining_minutes == 0) {
+            minutes_padding = String{"00"};
+        } else {
+            minutes_padding = String{"0"};
+        }
+    }
+
+    String str = minutes_padding + String::toString(remaining_minutes) + String(":") + seconds_padding + String::toString(remaining_seconds);
 
     return str;
 }

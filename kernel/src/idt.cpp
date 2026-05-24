@@ -69,7 +69,7 @@ void ps2_isr(void*) {
         kbd_buffer_index += 1;
     }
 
-    print_to_serial();
+    read_input();
     outb(0x20,0x20);
 }
 

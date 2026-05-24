@@ -5,8 +5,8 @@
 #ifndef KARNEL_POMODORO_H
 #define KARNEL_POMODORO_H
 
-constexpr int WORK_LENGTH = 5;
-constexpr int BREAK_LENGTH = 2;
+constexpr int WORK_LENGTH = 79;
+constexpr int BREAK_LENGTH = 500;
 
 class Renderer;
 
