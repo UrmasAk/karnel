@@ -1,7 +1,7 @@
 #include "../inc/pit.hpp"
-
 #include "../inc/idt.hpp"
 #include "../inc/pic.hpp"
+#include "../inc/io.hpp"
 
 int pitFrequency;
 

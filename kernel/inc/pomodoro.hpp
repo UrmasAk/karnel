@@ -1,9 +1,4 @@
-//
-// Created by jesper on 22.05.26.
-//
-
-#ifndef KARNEL_POMODORO_H
-#define KARNEL_POMODORO_H
+#pragma once
 
 constexpr int WORK_LENGTH = 79;
 constexpr int BREAK_LENGTH = 500;
@@ -29,5 +24,3 @@ private:
     State state_{State::W_RUN};
 };
 
-
-#endif //KARNEL_POMODORO_H

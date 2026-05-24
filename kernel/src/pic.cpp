@@ -1,6 +1,6 @@
 #include <cstdint>
 #include "../inc/pic.hpp"
-#include "../inc/pit.hpp"
+#include "../inc/io.hpp"
 
 void setup_pic(int offset1, int offset2) {
     __asm__ __volatile__("cli");

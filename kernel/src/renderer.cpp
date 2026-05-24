@@ -1,14 +1,8 @@
-//
-// Created by jesper on 22.05.26.
-//
 #define SSFN_CONSOLEBITMAP_TRUECOLOR    /* use the special renderer for 32 bit truecolor packed pixels */
 #define SSFN_NO_CPP_STD_STRING
 #include "../inc/ssfn.hpp"
 #include "../inc/renderer.hpp"
 #include "../inc/string.hpp"
-
-
-
 
 Renderer::Renderer(limine_framebuffer *framebuffer_ptr, const uint8_t *font_ptr) {
     ssfn_src = reinterpret_cast<ssfn_font_t*>(const_cast<uint8_t*>(font_ptr));      /* the bitmap font to use */
@@ -22,15 +16,6 @@ Renderer::Renderer(limine_framebuffer *framebuffer_ptr, const uint8_t *font_ptr)
     ssfn_dst.fg = 0xFFFFFF;                     /* foreground color */
 }
 
-#ifdef RENDER_NO_VARIABLE
-void Renderer::render() {
-    clearScreen_();
-    ssfn_dst.x = ssfn_dst.w/2;
-    ssfn_dst.y = ssfn_dst.h/2;
-    putText_("tere");
-}
-#endif
-
 void Renderer::render(Pomodoro::State state, int remaining_time_sec) {
     String time = calculate_remaining_time_(remaining_time_sec);
     RGB pixel = [state]() -> RGB {
@@ -41,6 +26,7 @@ void Renderer::render(Pomodoro::State state, int remaining_time_sec) {
             case Pomodoro::State::B_RUN: return RGB{0, 255, 0, 255};
             case Pomodoro::State::B_END: return RGB{0, 64, 0, 255};
             case Pomodoro::State::B_PAUSE: return RGB{0, 128, 0, 255};
+            default: return RGB {0, 0, 0, 0};
         }
     }();
 
@@ -90,14 +76,6 @@ void Renderer::fill_screen(uint32_t pixel_value) {
         for (uint64_t x = 0; x < ptr_->width; x++) {
             fb_ptr[y * (ptr_->pitch / 4) + x] = pixel_value;
         }
-    }
-}
-
-void Renderer::putText_(char *string) {
-    for (int i = 0; i < 16; i++) {
-        // ssfn_putc(static_cast<uint32_t>(character));
-        // uint32_t test = static_cast<uint32_t>(character) & 0x000000FF ;
-        ssfn_putc(string[i]);
     }
 }
 

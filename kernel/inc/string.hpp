@@ -1,9 +1,5 @@
-//
-// Created by jesper on 24.05.26.
-//
+#pragma once
 
-#ifndef KARNEL_STRING_HPP
-#define KARNEL_STRING_HPP
 #include "cstddef"
 #include "cstdint"
 
@@ -21,6 +17,3 @@ public:
 
     char operator[](int idx) const;
 };
-
-
-#endif //KARNEL_STRING_HPP
