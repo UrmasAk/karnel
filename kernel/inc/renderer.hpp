@@ -10,22 +10,16 @@
 
 class Renderer {
 public:
-    Renderer(limine_framebuffer* framebuffer_ptr, const uint8_t* font_ptr);
-    void setString(const char string[16]);
+    Renderer(limine_framebuffer *framebuffer_ptr, const uint8_t* font_ptr);
+    void setString(char *string);
     void render();
 
 
 
 private:
 
-    uint8_t* ptr_;
-    int w_;
-    int h_;
-    int p_;
-    int x_;
-    int y_;
-    int fg_;
-    char string_[16]{};
+    limine_framebuffer *ptr_;
+    char *string_{};
 
     void clearScreen_();
     void putText_();
