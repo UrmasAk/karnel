@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="CLion QEMU" type="com.jetbrains.cidr.embedded.customgdbserver.type" factoryName="com.jetbrains.cidr.embedded.customgdbserver.factory" PROGRAM_PARAMS="-machine q35 -gdb tcp::30303 -S -drive if=pflash,unit=0,format=raw,file=edk2-ovmf/ovmf-code-x86_64.fd,readonly=on -cdrom template-x86_64.iso -m 2G" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" WORKING_DIR="file://$FileDir$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="karnel" TARGET_NAME="clion" CONFIG_NAME="clion" version="1" RUN_PATH="$PROJECT_DIR$/kernel/bin-x86_64/kernel">
+    <custom-gdb-server version="1" gdb-connect="tcp::30303" executable="/nix/store/3q8ksxfw97dxi7g11c7xf1ksa1r04crs-qemu-10.2.2/bin/qemu-system-x86_64" warmup-ms="0" download-type="NONE" reset-cmd="monitor system_reset" reset-type="AFTER_DOWNLOAD">
+      <debugger toolchainName="Make" />
+    </custom-gdb-server>
+    <method v="2">
+      <option name="CLION.COMPOUND.BUILD" enabled="true" />
+    </method>
+  </configuration>
+</component>
