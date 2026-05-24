@@ -32,6 +32,7 @@
 #define _SSFN_H_
 
 #define SSFN_VERSION 0x0200
+#include "cstddef"
 
 #ifdef  __cplusplus
 extern "C" {
