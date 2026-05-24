@@ -22,9 +22,17 @@ String::String(const char *string) {
     }
 }
 
+String::String(char string) {
+    buf_[0] = string;
+    length = 1;
+}
+
 String String::toString(int value) {
     String valjund;
-    
+    for (int i = 16; i != 0 && value != 0; i--) {
+        valjund = static_cast<String>("0123456789"[value % 10]) + valjund;
+        value = value / 10;
+    }
     return valjund;
 }
 
