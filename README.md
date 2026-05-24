@@ -23,3 +23,12 @@ Vaadake käivitamise kohta lähemalt [siit](limine-cxx-templateREADME.md)
 | `inc/io.hpp`                            | Port I/O abistajad (`inb`/`outb`)                                                                 |
 | `inc/ssfn.hpp`                          | SSFN2 fondi [ilmestaja](https://akit.cyber.ee/term/16742-rendering-1)                             |
 | `src/pomodoro.cpp` / `inc/pomodoro.hpp` | Pomodoro [talitlusloogikakiht](https://akit.cyber.ee/term/3733-business-logic-layer)              |
+
+
+## Funktsioonid
+
+- Paus
+- Resume
+- Reset
+
+Mitu pomodorot tehtud tärnikesed vmdgi
