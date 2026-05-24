@@ -1,7 +1,7 @@
 #pragma once
 
-constexpr int WORK_LENGTH = 79;
-constexpr int BREAK_LENGTH = 500;
+constexpr int WORK_LENGTH = 10;
+constexpr int BREAK_LENGTH = 2;
 
 class Renderer;
 

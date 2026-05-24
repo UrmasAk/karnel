@@ -20,12 +20,12 @@ void Renderer::render(Pomodoro::State state, int remaining_time_sec) {
     String time = calculate_remaining_time_(remaining_time_sec);
     RGB pixel = [state]() -> RGB {
         switch (state) {
-            case Pomodoro::State::W_RUN: return RGB{0, 0, 255, 255};
-            case Pomodoro::State::W_END: return RGB{0, 0, 64, 255};
-            case Pomodoro::State::W_PAUSE: return RGB{0, 0, 128, 255};
-            case Pomodoro::State::B_RUN: return RGB{0, 255, 0, 255};
-            case Pomodoro::State::B_END: return RGB{0, 64, 0, 255};
-            case Pomodoro::State::B_PAUSE: return RGB{0, 128, 0, 255};
+            case Pomodoro::State::W_RUN: return RGB{0, 0, 128, 255};
+            case Pomodoro::State::W_END: return RGB{0, 0, 32, 255};
+            case Pomodoro::State::W_PAUSE: return RGB{0, 0, 64, 255};
+            case Pomodoro::State::B_RUN: return RGB{0, 128, 0, 255};
+            case Pomodoro::State::B_END: return RGB{0, 32, 0, 255};
+            case Pomodoro::State::B_PAUSE: return RGB{0, 64, 0, 255};
             default: return RGB {0, 0, 0, 0};
         }
     }();
