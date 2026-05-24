@@ -20,6 +20,8 @@ public:
     String operator+(const String &string);
 
     char operator[](int idx) const;
+
+    char* begin();
 };
 
 

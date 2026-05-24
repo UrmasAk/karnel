@@ -54,3 +54,7 @@ char String::operator[](int idx) const {
     }
     return buf_[idx];
 }
+
+char * String::begin() {
+    return buf_;
+}

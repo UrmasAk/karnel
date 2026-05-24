@@ -7,8 +7,11 @@
 
 #include "limine.h"
 #include "pomodoro.hpp"
-#include "string.hpp"
+#include "string.hpp" 
 
+namespace SSFN {
+    class Font;
+}
 
 class Renderer {
 
@@ -25,6 +28,8 @@ private:
         std::uint8_t alpha;
     };
     limine_framebuffer *ptr_;
+    SSFN::Font *font;
+    ssfn_buf_t *buf_;
 
 
     String calculate_remaining_time_(int remaining_time_sec);
