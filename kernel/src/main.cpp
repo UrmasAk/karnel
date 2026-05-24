@@ -1,5 +1,3 @@
-#define SSFN_CONSOLEBITMAP_TRUECOLOR    /* use the special renderer for 32 bit truecolor packed pixels */
-#define SSFN_NO_CPP_STD_STRING
 
 #include <cstdint>
 #include <cstddef>
@@ -9,7 +7,7 @@
 #include "../inc/idt.hpp"
 #include "../inc/pic.hpp"
 #include "../inc/pit.hpp"
-#include "../inc/ssfn.hpp"
+#include "../inc/renderer.hpp"
 
 // Set the base revision to 6, this is recommended as this is the latest
 // base revision described by the Limine boot protocol specification.

@@ -4,11 +4,8 @@
 
 #ifndef KARNEL_RENDER_H
 #define KARNEL_RENDER_H
-#define SSFN_CONSOLEBITMAP_TRUECOLOR    /* use the special renderer for 32 bit truecolor packed pixels */
-#define SSFN_NO_CPP_STD_STRING
 
 #include "limine.h"
-#include "../inc/ssfn.hpp"
 
 
 class Renderer {

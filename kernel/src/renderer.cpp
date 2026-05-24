@@ -1,7 +1,9 @@
 //
 // Created by jesper on 22.05.26.
 //
-
+#define SSFN_CONSOLEBITMAP_TRUECOLOR    /* use the special renderer for 32 bit truecolor packed pixels */
+#define SSFN_NO_CPP_STD_STRING
+#include "../inc/ssfn.hpp"
 #include "../inc/renderer.hpp"
 
 
