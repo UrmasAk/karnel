@@ -19,6 +19,7 @@
           pkgs.cmake
           pkgs.qemu
           pkgs.libisoburn
+          pkgs.gdb
         ];
       };
     };
