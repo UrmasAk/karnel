@@ -1,5 +1,6 @@
 #include "../inc/idt.hpp"
 #include "../inc/io.hpp"
+#include "../inc/pomodoro.hpp"
 #include "../inc/ps2.hpp"
 
 static IDT::Entry idt[256];

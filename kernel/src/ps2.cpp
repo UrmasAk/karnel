@@ -3,6 +3,7 @@
 #include "../inc/io.hpp"
 #include "../inc/pit.hpp"
 #include "../inc/pic.hpp"
+#include "../inc/pomodoro.hpp"
 
 void setup_ps2() {
     outb(PS2_COMMAND_PORT, 0xAD);
@@ -56,6 +57,7 @@ void setup_ps2() {
     __asm__ __volatile__("sti");
 }
 
+extern Pomodoro pomodoro;
 extern volatile char kbd_buffer[];
 static int current_index = 0;
 
@@ -63,6 +65,7 @@ char print_to_serial() {
     char c = kbd_buffer[current_index];
     kbd_buffer[current_index] = '\0';
     current_index++;
+    pomodoro.handle_kbd(c);
     outb(0x3F8, c); // Debug: Send '!' to serial on every tick
     return c;
 }

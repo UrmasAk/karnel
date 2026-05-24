@@ -13,6 +13,7 @@ class Renderer;
 class Pomodoro {
 public:
     enum class State {W_RUN, W_END, W_PAUSE, B_RUN, B_END, B_PAUSE};
+    Pomodoro() = default;
     Pomodoro(Renderer &render);
 
     void process_run();

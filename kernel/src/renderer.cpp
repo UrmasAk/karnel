@@ -36,11 +36,11 @@ void Renderer::render(Pomodoro::State state, int remaining_time_sec) {
     RGB pixel = [state]() -> RGB {
         switch (state) {
             case Pomodoro::State::W_RUN: return RGB{0, 0, 255, 255};
-            case Pomodoro::State::W_END: return RGB{0, 156, 255, 255};
-            case Pomodoro::State::W_PAUSE: return RGB{0, 0, 255, 128};
+            case Pomodoro::State::W_END: return RGB{0, 0, 64, 255};
+            case Pomodoro::State::W_PAUSE: return RGB{0, 0, 128, 255};
             case Pomodoro::State::B_RUN: return RGB{0, 255, 0, 255};
-            case Pomodoro::State::B_END: return RGB{0, 255, 156, 255};
-            case Pomodoro::State::B_PAUSE: return RGB{0, 255, 0, 128};
+            case Pomodoro::State::B_END: return RGB{0, 64, 0, 255};
+            case Pomodoro::State::B_PAUSE: return RGB{0, 128, 0, 255};
         }
     }();
 
@@ -58,7 +58,7 @@ void Renderer::render(Pomodoro::State state, int remaining_time_sec) {
 }
 
 String Renderer::calculate_remaining_time_(int remaining_time_sec) {
-    int remaining_minutes = static_cast<int>(remaining_time_sec / 60);
+    int remaining_minutes = remaining_time_sec / 60;
     int volatile remaining_seconds = remaining_time_sec - (remaining_minutes * 60);
 
     String str;

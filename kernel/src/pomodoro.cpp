@@ -14,6 +14,8 @@ void Pomodoro::process_run() {
         remaining_time_sec_--;
     } else {
         state_ =  (state_ == State::W_RUN) ? State::W_END : State::B_END;
+        renderer_->render(state_, remaining_time_sec_);
+
     }
 }
 

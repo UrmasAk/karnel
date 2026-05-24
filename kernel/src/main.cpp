@@ -88,6 +88,8 @@ extern "C" {
 extern void (*__init_array[])();
 extern void (*__init_array_end[])();
 
+Pomodoro pomodoro;
+
 // The following will be our kernel's entry point.
 // If renaming kmain() to something else, make sure to change the
 // linker script accordingly.
@@ -128,7 +130,7 @@ extern "C" void kmain() {
     // Text setup
 
     Renderer render{framebuffer,font_u_vga16_start};
-    Pomodoro pomodoro{render};
+    pomodoro = Pomodoro(render);
     pomodoro.run();
 
 #ifdef MAIN_TEST_RENDER
