@@ -133,68 +133,52 @@ extern "C" void kmain() {
 
     // Text setup
 
-    /* set up context by global variables */
-    ssfn_src = reinterpret_cast<ssfn_font_t*>(const_cast<std::uint8_t*>(font_u_vga16_start));      /* the bitmap font to use */
-
-    ssfn_dst.ptr = static_cast<std::uint8_t*>(framebuffer->address);                  /* address of the linear frame buffer */
-    ssfn_dst.w = framebuffer->width;                          /* width */
-    ssfn_dst.h = framebuffer->height;                           /* height */
-    ssfn_dst.p = framebuffer->pitch;                          /* bytes per line */
-    ssfn_dst.x = ssfn_dst.y = 0;                /* pen position */
-    ssfn_dst.fg = 0xFFFFFF;                     /* foreground color */
+    Renderer render{framebuffer,font_u_vga16_start};
 
 
 
 
-    while (true) {
-
-        for (std::size_t y = 0; y < framebuffer->height; y++) {
-            for (std::size_t x = 0; x < framebuffer->width; x++) {
-                // std::uint32_t nX = x * 255 / framebuffer->width;
-                std::uint32_t nY = y * 255 / framebuffer->height;
-                fb_ptr[y * (framebuffer->pitch / 4) + x].red = nY;
-            }
-            pit_sleep_ms(1);
+    for (std::size_t y = 0; y < framebuffer->height; y++) {
+        for (std::size_t x = 0; x < framebuffer->width; x++) {
+            // std::uint32_t nX = x * 255 / framebuffer->width;
+            std::uint32_t nY = y * 255 / framebuffer->height;
+            fb_ptr[y * (framebuffer->pitch / 4) + x].red = nY;
         }
-
-        /* render UNICODE codepoints directly to the screen and then adjust pen position */
-        ssfn_putc('H');
-        ssfn_putc('e');
-        ssfn_putc('l');
-        ssfn_putc('l');
-        ssfn_putc('o');
-
-
-        // int lock_in_time_sec = 20 * 60;
-        int lock_in_time_sec = 10;
-
-        for (int i = 0; i < lock_in_time_sec; ++i) {
-            pit_sleep_ms(1000);
-        }
-
-        for (std::size_t y = 0; y < framebuffer->height; y++) {
-            for (std::size_t x = 0; x < framebuffer->width; x++) {
-                fb_ptr[y * (framebuffer->pitch / 4) + x].blue = 100;
-            }
-            pit_sleep_ms(1);
-        }
-
-        // int lock_out_time_sec = 5 * 60;
-        int lock_out_time_sec = 2;
-        for (int i = 0; i < lock_out_time_sec; ++i) {
-            pit_sleep_ms(1000);
-        }
-
-        for (std::size_t y = 0; y < framebuffer->height; y++) {
-            for (std::size_t x = 0; x < framebuffer->width; x++) {
-                fb_ptr[y * (framebuffer->pitch / 4) + x].blue = 0;
-                fb_ptr[y * (framebuffer->pitch / 4) + x].green = 0;
-                fb_ptr[y * (framebuffer->pitch / 4) + x].red = 0;
-                fb_ptr[y * (framebuffer->pitch / 4) + x].alpha = 0;
-            }
-            pit_sleep_ms(1);
-        }
+        pit_sleep_ms(1);
     }
+
+    // /* render UNICODE codepoints directly to the screen and then adjust pen position */
+    // ssfn_putc('H');
+    // ssfn_putc('e');
+    // ssfn_putc('l');
+    // ssfn_putc('l');
+    // ssfn_putc('o');
+
+
+    // // int lock_in_time_sec = 20 * 60;
+    // int lock_in_time_sec = 10;
+    //
+    // for (int i = 0; i < lock_in_time_sec; ++i) {
+    //     pit_sleep_ms(1000);
+    // }
+    //
+    // for (std::size_t y = 0; y < framebuffer->height; y++) {
+    //     for (std::size_t x = 0; x < framebuffer->width; x++) {
+    //         fb_ptr[y * (framebuffer->pitch / 4) + x].blue = 100;
+    //     }
+    //     pit_sleep_ms(1);
+    // }
+    //
+    // // int lock_out_time_sec = 5 * 60;
+    // int lock_out_time_sec = 2;
+    // for (int i = 0; i < lock_out_time_sec; ++i) {
+    //     pit_sleep_ms(1000);
+    // }
+    // char string[]{"tere!"};
+    char string[]{"Ahoi!\0"};
+    render.setString(string);
+
+    render.render();
 
     // We're done, just hang...
     hcf();
